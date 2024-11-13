@@ -1,0 +1,16 @@
+.container {
+  padding: 20px;
+}
+
+.grid-item {
+  width: 100%;
+}
+
+.color-box {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
