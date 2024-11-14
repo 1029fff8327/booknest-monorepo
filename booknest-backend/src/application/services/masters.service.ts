@@ -1,8 +1,8 @@
-import { CreateMasterDto } from '../dto/master/create-master.dto';
-import { IMasterRepository } from 'src/domain/repositories/master.repository.interface';
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import { Master } from 'src/domain/entities/master.entity';
+import { CreateMasterDto } from '../dto/master/create-master.dto';
 import { UpdateMasterDto } from '../dto/master/update-master.dto';
+import { IMasterRepository } from 'src/domain/repositories/master.repository.interface';
 import { MasterRepositoryToken } from 'src/constants';
 
 @Injectable()

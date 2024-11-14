@@ -50,7 +50,14 @@ function AddMasterPage() {
   };
 
   const handlePhotoChange = (event) => {
-    setPhoto(event.target.files[0]);
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPhoto(reader.result); // Сохраняем изображение в формате Base64
+    };
+    if (file) {
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleServiceChange = (index, value) => {
@@ -72,24 +79,21 @@ function AddMasterPage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const formData = new FormData();
-    formData.append("name", name);
-    formData.append("description", description);
-    formData.append("email", email);
-    formData.append("phone", phone);
-    if (photo) {
-      formData.append("photo", photo);
-    }
-    services.forEach((service, index) => {
-      formData.append(`services[${index}]`, service);
-    });
+    const masterData = {
+      name,
+      description,
+      email,
+      phone,
+      photo,
+      services,
+    };
 
     try {
       if (editingMaster) {
-        await updateMaster(editingMaster.id, formData);
+        await updateMaster(editingMaster.id, masterData);
         alert("Мастер успешно обновлен");
       } else {
-        await createMaster(formData);
+        await createMaster(masterData);
         alert("Мастер успешно добавлен");
       }
       fetchMasters();
@@ -104,11 +108,8 @@ function AddMasterPage() {
     setDescription(master.description);
     setEmail(master.email);
     setPhone(master.phone);
-    setServices(
-      Array.isArray(master.services)
-        ? master.services
-        : JSON.parse(master.services)
-    );
+    setPhoto(master.photo);
+    setServices(master.services || []);
     setEditingMaster(master);
     setTabIndex(0);
   };
@@ -205,7 +206,7 @@ function AddMasterPage() {
               </Button>
               {photo && (
                 <Avatar
-                  src={URL.createObjectURL(photo)}
+                  src={photo}
                   alt="Фото мастера"
                   sx={{ width: 56, height: 56, mt: 2 }}
                 />

@@ -20,7 +20,7 @@ const MasterList = ({ masters, onEdit, onDelete }) => {
               <CardMedia
                 component="img"
                 height="300"
-                image={master.photo}
+                image={master.photo} // Используем Base64 строку для отображения изображения
                 alt={master.name}
               />
             ) : (
