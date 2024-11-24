@@ -19,6 +19,10 @@ export class ReviewRepository implements IReviewRepository {
     return this.reviewsRepository.findOne({ where: { id: parseInt(id) } });
   }
 
+  findByMasterId(masterId: number): Promise<Review[]> {
+    return this.reviewsRepository.find({ where: { masterId } });
+  }
+
   async create(review: Review): Promise<Review> {
     return this.reviewsRepository.save(review);
   }

@@ -20,6 +20,22 @@ export class Master {
   @Column({ nullable: true })
   photo: string;
 
-  @Column('simple-array')
+  @Column({
+    type: 'text',
+    transformer: {
+      to: (value: string[]) => value.join(','),
+      from: (value: string) => value.split(','),
+    },
+  })
   services: string[];
+
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt: Date;
+
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+    onUpdate: 'CURRENT_TIMESTAMP',
+  })
+  updatedAt: Date;
 }

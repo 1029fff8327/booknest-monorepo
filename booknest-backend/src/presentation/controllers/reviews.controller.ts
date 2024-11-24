@@ -23,6 +23,14 @@ export class ReviewsController {
     return this.reviewService.findOne(id);
   }
 
+  @Get('/master/:masterId')
+  @ApiOperation({ summary: 'Get reviews by master ID' })
+  @ApiParam({ name: 'masterId', description: 'Master ID' })
+  @ApiResponse({ status: 200, description: 'Return reviews for the master' })
+  findByMasterId(@Param('masterId') masterId: string) {
+    return this.reviewService.findByMasterId(parseInt(masterId));
+  }
+
   @Post()
   @ApiOperation({ summary: 'Create a new review' })
   @ApiResponse({ status: 201, description: 'The review has been created' })

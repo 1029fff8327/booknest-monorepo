@@ -20,9 +20,8 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe());
 
-  // Настройка CORS
   app.enableCors({
-    origin: 'http://localhost:3001', // URL вашего фронтенда
+    origin: ['http://localhost:3001', 'http://localhost:3002'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
@@ -30,6 +29,7 @@ async function bootstrap() {
   app.use(bodyParser.json({ limit: '10mb' }));
   app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 
+  console.log('Backend server running at http://localhost:3000');
   await app.listen(3000);
 }
 bootstrap();

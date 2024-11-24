@@ -14,4 +14,11 @@ export class CreateReviewDto {
 
   @ApiProperty({ example: 'Great service!', description: 'The review comment' })
   comment: string;
+
+  @ApiProperty({
+    example: 1,
+    description: 'The ID of the master being reviewed',
+    required: false,
+  })
+  masterId?: number;
 }

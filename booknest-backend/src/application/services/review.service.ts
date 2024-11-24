@@ -19,11 +19,16 @@ export class ReviewService {
     return this.reviewRepository.findOne(id);
   }
 
+  findByMasterId(masterId: number): Promise<Review[]> {
+    return this.reviewRepository.findByMasterId(masterId);
+  }
+
   create(createReviewDto: CreateReviewDto): Promise<Review> {
     const review = new Review();
     review.name = createReviewDto.name;
     review.rating = createReviewDto.rating;
     review.comment = createReviewDto.comment;
+    review.masterId = createReviewDto.masterId || null; // Указываем masterId, если есть
     return this.reviewRepository.create(review);
   }
 

@@ -1,0 +1,58 @@
+/* Основной контейнер */
+.customer-reviews-fullscreen {
+  width: 100%; /* Контейнер занимает всю ширину */
+  max-width: 100%; /* Ограничение ширины, чтобы не выходить за границы */
+  margin: 0; /* Убираем отступы */
+  padding: 20px; /* Добавляем внутренние отступы */
+  background-color: #f7f7f7; /* Цвет фона */
+  box-sizing: border-box; /* Включаем padding в расчёт ширины */
+}
+
+/* Форма отзыва с ограничением ширины */
+.customer-reviews-fullscreen form {
+  max-width: 800px; /* Ограничение ширины формы */
+  margin: 0 auto 40px; /* Центровка формы */
+}
+
+/* Список отзывов */
+.reviews-list {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+/* Каждый отзыв */
+.review-item {
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Hover-эффект для отзывов */
+.review-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Стили для имени автора отзыва */
+.review-item strong {
+  font-size: 16px;
+  color: #333;
+}
+
+/* Стили для текста комментария */
+.review-item p {
+  margin: 10px 0;
+  font-size: 14px;
+  color: #666;
+}
+
+/* Стили для рейтинга (звезды) */
+.review-item .MuiRating-root {
+  margin-top: 10px;
+  font-size: 20px;
+}

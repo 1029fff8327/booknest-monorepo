@@ -7,21 +7,20 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 
-import BookingConflictDialog from "./BookingConflictDialog";
-import { BookingContext } from "../../context/BookingContext";
+import { createBooking } from "../services/BookingService";
 import { useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 const CreateBooking = () => {
   const { t } = useTranslation();
-  const { bookings, createBooking } = useContext(BookingContext);
   const location = useLocation();
   const master = location.state?.master || {};
 
-  const [name, setName] = useState(master.name || "");
-  const [email, setEmail] = useState(master.email || "");
+  // Начальные значения теперь пустые строки
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [service, setService] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
@@ -30,18 +29,6 @@ const CreateBooking = () => {
 
   const handleCreateBooking = async () => {
     try {
-      const existingBooking = bookings.find(
-        (booking) => booking.date === date && booking.time === time
-      );
-
-      if (existingBooking) {
-        setConflictMessage(
-          t("This time slot is already booked. Please choose another time.")
-        );
-        setConflictDialogOpen(true);
-        return;
-      }
-
       const newBooking = {
         name,
         email,
@@ -50,8 +37,10 @@ const CreateBooking = () => {
         date,
         time,
       };
+
       await createBooking(newBooking);
 
+      // Сброс полей формы после успешного создания
       setName("");
       setEmail("");
       setService("");
@@ -137,11 +126,14 @@ const CreateBooking = () => {
           </Button>
         </Box>
       </Paper>
-      <BookingConflictDialog
-        open={conflictDialogOpen}
-        onClose={handleCloseDialog}
-        message={conflictMessage}
-      />
+      {conflictDialogOpen && (
+        // eslint-disable-next-line react/jsx-no-undef
+        <BookingConflictDialog
+          open={conflictDialogOpen}
+          onClose={handleCloseDialog}
+          message={conflictMessage}
+        />
+      )}
     </Container>
   );
 };

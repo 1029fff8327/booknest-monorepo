@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Review {
@@ -13,4 +13,7 @@ export class Review {
 
   @Column()
   comment: string;
+
+  @Column({ nullable: true })
+  masterId: number;
 }

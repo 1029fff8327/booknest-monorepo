@@ -24,12 +24,9 @@ import BookIcon from "@mui/icons-material/Book";
 import Booking from "./components/pages/BookingPage";
 import BookingHistory from "./components/BookingHistory/BookingHistory";
 import { BookingProvider } from "./context/BookingContext";
-import CreateBooking from "./components/Booking/BookingCreate";
-import CustomerReviews from "./components/CustomerReviews/CustomerReviews";
 import Documentation from "./components/Documentation/Documentation";
 import LanguageSwitcher from "./components/LanguageSwitcher/LanguageSwitcher";
 import LoginPage from "./components/Auth/LoginPage";
-import MastersPage from "./components/pages/MastersPage";
 import OAuthCallback from "./components/Auth/OAuthCallback.tsx";
 import RegisterPage from "./components/Auth/RegisterPage";
 import { SettingProvider } from "./context/SettingContext";
@@ -124,10 +121,6 @@ function App() {
                 element={user ? <AdminDashboard /> : <Navigate to="/login" />}
               />
               <Route
-                path="/reviews"
-                element={user ? <CustomerReviews /> : <Navigate to="/login" />}
-              />
-              <Route
                 path="/analytics"
                 element={user ? <Analytics /> : <Navigate to="/login" />}
               />
@@ -150,10 +143,6 @@ function App() {
               <Route
                 path="/tariffs"
                 element={user ? <TariffsPage /> : <Navigate to="/login" />}
-              />
-              <Route
-                path="/masters"
-                element={user ? <MastersPage /> : <Navigate to="/login" />}
               />
               <Route
                 path="/add-master"
