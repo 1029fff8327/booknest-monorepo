@@ -1,3 +1,5 @@
+// pages/MastersPage.jsx
+
 import {
   Box,
   Button,
@@ -10,51 +12,81 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 
-import axios from "../utils/axios"; // Подключение axios
+import axios from "../utils/axios";
 import { useNavigate } from "react-router-dom";
+import { useSettingContext } from "../services/SettingService";
 
 function MastersPage() {
   const navigate = useNavigate();
   const [masters, setMasters] = useState([]);
-  const [loading, setLoading] = useState(true); // Добавляем состояние загрузки
+  const [loading, setLoading] = useState(true);
+  const { settings } = useSettingContext();
 
   useEffect(() => {
     const fetchMasters = async () => {
       try {
-        const response = await axios.get("/masters"); // Запрос к API мастеров
+        const response = await axios.get("/masters");
         setMasters(response.data);
       } catch (error) {
-        console.error("Ошибка при получении мастеров:", error); // Логируем ошибку
+        console.error("Ошибка при получении мастеров:", error);
       } finally {
-        setLoading(false); // Снимаем состояние загрузки
+        setLoading(false);
       }
     };
     fetchMasters();
   }, []);
 
   const handleBookingClick = (master) => {
-    navigate("/booking", { state: { master } }); // Передаем мастера на страницу бронирования
+    navigate("/booking", { state: { master } });
   };
 
   const handleReviewsClick = (master) => {
-    navigate(`/masters/${master.id}/reviews`); // Переход на страницу отзывов о мастере
+    navigate(`/masters/${master.id}/reviews`);
   };
 
   if (loading) {
     return (
       <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
-        <CircularProgress /> {/* Индикатор загрузки */}
+        <CircularProgress />
       </Box>
     );
   }
 
   return (
-    <Box sx={{ p: 3 }}>
-      <Typography variant="h4" gutterBottom>
+    <Box
+      sx={{
+        backgroundColor: settings.backgroundColor || "#f9f9f9",
+        color: settings.primaryColor || "#000",
+        p: 3,
+        minHeight: "100vh",
+      }}
+    >
+      {/* Кнопка "На главную" */}
+      <Button
+        variant="contained"
+        sx={{
+          backgroundColor: settings.primaryColor || "#000",
+          color: "#fff",
+          mb: 2,
+          "&:hover": { backgroundColor: "#333" },
+        }}
+        onClick={() => navigate("/")}
+      >
+        На главную
+      </Button>
+
+      <Typography
+        variant="h4"
+        gutterBottom
+        sx={{ textAlign: "center", fontWeight: "bold" }}
+      >
         Наши Мастера
       </Typography>
+
       {masters.length === 0 ? (
-        <Typography variant="h6">Мастера отсутствуют</Typography>
+        <Typography variant="h6" textAlign="center">
+          Мастера отсутствуют
+        </Typography>
       ) : (
         <Grid container spacing={3}>
           {masters.map((master) => (
@@ -68,7 +100,6 @@ function MastersPage() {
                   justifyContent: "space-between",
                 }}
               >
-                {/* Если фото отсутствует, показываем текстовую иконку */}
                 {master.photo ? (
                   <CardMedia
                     component="img"
@@ -140,11 +171,9 @@ function MastersPage() {
                   <Button
                     variant="contained"
                     sx={{
-                      backgroundColor: "#000",
+                      backgroundColor: settings.primaryColor || "#000",
                       color: "#fff",
-                      "&:hover": {
-                        backgroundColor: "#333",
-                      },
+                      "&:hover": { backgroundColor: "#333" },
                     }}
                     onClick={() => handleBookingClick(master)}
                   >
@@ -153,8 +182,8 @@ function MastersPage() {
                   <Button
                     variant="outlined"
                     sx={{
-                      borderColor: "#000",
-                      color: "#000",
+                      borderColor: settings.primaryColor || "#000",
+                      color: settings.primaryColor || "#000",
                       "&:hover": {
                         backgroundColor: "#f0f0f0",
                         borderColor: "#333",

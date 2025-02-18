@@ -1,7 +1,6 @@
 import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
 import { SettingsService } from 'src/application/services/settings.service';
 import { Setting } from 'src/domain/entities/setting.entity';
-import { CreateSettingDto } from 'src/application/dto/create-setting.dto';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @ApiTags('settings')
@@ -9,26 +8,21 @@ import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 export class SettingsController {
   constructor(private readonly settingsService: SettingsService) {}
 
-  @ApiOperation({ summary: 'Получить все настройки' })
-  @ApiResponse({ status: 200, description: 'Возвращает все настройки.' })
+  @ApiOperation({ summary: 'Получить все настройки (JSON)' })
+  @ApiResponse({ status: 200, description: 'Возвращает объект настроек.' })
   @Get()
-  findAll(): Promise<Setting[]> {
-    return this.settingsService.findAll();
+  async getGlobalSettings(): Promise<any> {
+    const setting = await this.settingsService.findByKey('globalSettings');
+    return setting ? JSON.parse(setting.value) : {};
   }
 
-  @ApiOperation({ summary: 'Получить настройку по ID' })
-  @ApiResponse({ status: 200, description: 'Возвращает настройку.' })
-  @ApiResponse({ status: 404, description: 'Настройка не найдена.' })
-  @Get(':id')
-  findOne(@Param('id') id: string): Promise<Setting> {
-    return this.settingsService.findOne(parseInt(id, 10));
-  }
-
-  @ApiOperation({ summary: 'Создать новую настройку' })
-  @ApiResponse({ status: 201, description: 'Настройка успешно создана.' })
+  @ApiOperation({ summary: 'Создать или обновить глобальные настройки' })
+  @ApiResponse({ status: 201, description: 'Настройки сохранены.' })
   @Post()
-  create(@Body() createSettingDto: CreateSettingDto): Promise<Setting> {
-    return this.settingsService.create(createSettingDto);
+  async createOrUpdate(@Body() data: any): Promise<any> {
+    const savedSetting: Setting =
+      await this.settingsService.createOrUpdateGlobal(data);
+    return JSON.parse(savedSetting.value);
   }
 
   @ApiOperation({ summary: 'Удалить настройку по ID' })

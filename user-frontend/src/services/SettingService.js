@@ -1,4 +1,4 @@
-// SettingContext.jsx
+// SettingContext.js
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 
@@ -85,7 +85,7 @@ export const SettingProvider = ({ children }) => {
       try {
         const response = await axios.get("/settings");
         // Предположим, что бэк возвращает объект со всеми нужными полями
-        // Делаем merge с существующими, чтобы не потерять ключи, если какие-то поля отсутствуют
+        // Делаем merge с текущими, чтобы не потерять ключи
         setSettings((prev) => ({
           ...prev,
           ...response.data,

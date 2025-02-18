@@ -8,6 +8,6 @@ export class Setting {
   @Column()
   key: string;
 
-  @Column()
+  @Column({ type: 'text' })
   value: string;
 }

@@ -1,7 +1,16 @@
+// components/ReviewForm.jsx
+
 import { Box, Button, Rating, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
 
+import { useSettingContext } from "../services/SettingService";
+
+// 1) Импортируем контекст
+
 const ReviewForm = ({ onReviewAdded }) => {
+  // 2) Достаём настройки
+  const { settings } = useSettingContext();
+
   const [name, setName] = useState("");
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
@@ -20,14 +29,16 @@ const ReviewForm = ({ onReviewAdded }) => {
       onSubmit={handleSubmit}
       sx={{
         maxWidth: "800px",
-        margin: "0 auto 20px",
+        margin: "40px auto",
         display: "flex",
         flexDirection: "column",
         gap: "20px",
         padding: "20px",
-        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+        boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.1)",
         borderRadius: "8px",
-        backgroundColor: "#fff",
+        // Используем secondaryColor как фон внутри формы:
+        backgroundColor: settings.secondaryColor || "#fff",
+        overflow: "visible",
       }}
     >
       <Typography variant="h5" align="center" gutterBottom>
@@ -65,14 +76,14 @@ const ReviewForm = ({ onReviewAdded }) => {
         type="submit"
         variant="contained"
         sx={{
-          backgroundColor: "#000",
+          backgroundColor: settings.primaryColor || "#000",
           color: "#fff",
           "&:hover": {
             backgroundColor: "#333",
           },
         }}
       >
-        Отправить отзыв
+        Отправить
       </Button>
     </Box>
   );

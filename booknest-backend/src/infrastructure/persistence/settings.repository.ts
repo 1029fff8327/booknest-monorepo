@@ -19,6 +19,10 @@ export class SettingsRepository implements ISettingsRepository {
     return this.settingsRepository.findOne({ where: { id } });
   }
 
+  async findByKey(key: string): Promise<Setting | null> {
+    return this.settingsRepository.findOne({ where: { key } });
+  }
+
   create(setting: Setting): Promise<Setting> {
     return this.settingsRepository.save(setting);
   }

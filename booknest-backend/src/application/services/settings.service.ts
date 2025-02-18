@@ -1,8 +1,7 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Setting } from 'src/domain/entities/setting.entity';
 import { ISettingsRepository } from 'src/domain/repositories/settings.repository.interface';
-import { CreateSettingDto } from '../dto/create-setting.dto';
-import { SettingsRepositoryToken } from 'src/constants';
+import { SettingsRepositoryToken } from 'src/constants'; // Импортируем токен
 
 @Injectable()
 export class SettingsService {
@@ -11,20 +10,29 @@ export class SettingsService {
     private readonly settingsRepository: ISettingsRepository,
   ) {}
 
-  findAll(): Promise<Setting[]> {
+  async findAll(): Promise<Setting[]> {
     return this.settingsRepository.findAll();
   }
 
-  findOne(id: number): Promise<Setting> {
-    return this.settingsRepository.findOne(id);
+  async findByKey(key: string): Promise<Setting | null> {
+    return this.settingsRepository.findByKey(key);
   }
 
-  create(createSettingDto: CreateSettingDto): Promise<Setting> {
-    const setting = new Setting();
-    setting.key = createSettingDto.key;
-    setting.value = createSettingDto.value;
+  async createOrUpdateGlobal(data: any): Promise<Setting> {
+    const KEY = 'globalSettings';
+    const existing = await this.settingsRepository.findByKey(KEY);
 
-    return this.settingsRepository.create(setting);
+    const jsonString = JSON.stringify(data);
+
+    if (!existing) {
+      const newSetting = new Setting();
+      newSetting.key = KEY;
+      newSetting.value = jsonString;
+      return this.settingsRepository.create(newSetting);
+    } else {
+      existing.value = jsonString;
+      return this.settingsRepository.create(existing);
+    }
   }
 
   async remove(id: number): Promise<void> {

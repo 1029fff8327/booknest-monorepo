@@ -1,15 +1,33 @@
 import "../css/HomePage.css";
 
+import { Box, Typography } from "@mui/material";
+
 import { Link } from "react-router-dom";
-import MastersIcon from "@mui/icons-material/Person"; // Иконка для Мастеров
+import MastersIcon from "@mui/icons-material/Person";
 import React from "react";
-import ReviewsIcon from "@mui/icons-material/Comment"; // Иконка для Отзывов
+import ReviewsIcon from "@mui/icons-material/Comment";
+import { useSettingContext } from "../services/SettingService";
 
 const HomePage = () => {
+  const { settings } = useSettingContext();
+
   return (
-    <div className="home-container">
-      <h1>Добро пожаловать!</h1>
-      <p>Выберите, куда вы хотите перейти:</p>
+    <Box
+      sx={{
+        backgroundColor: settings.backgroundColor || "#f9f9f9",
+        minHeight: "100vh",
+        p: 5,
+        textAlign: "center",
+        color: settings.primaryColor || "#000",
+      }}
+    >
+      <Typography variant="h3" gutterBottom>
+        Добро пожаловать!
+      </Typography>
+      <Typography variant="h6" gutterBottom>
+        Вы на сайте: <strong>{settings.siteName || "MySite"}</strong>
+      </Typography>
+
       <nav className="home-nav">
         <Link to="/reviews" className="home-card">
           <ReviewsIcon className="home-icon" />
@@ -20,7 +38,7 @@ const HomePage = () => {
           <span className="home-card-text">Мастера</span>
         </Link>
       </nav>
-    </div>
+    </Box>
   );
 };
 
